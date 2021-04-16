@@ -21,11 +21,12 @@ public class ConsumerService {
         this.subscribeAsync();
     }
 
-    private void subscribeAsync()  {
+    private void subscribeAsync() {
         final Connection conn = natsClient.getNatsConnection();
         AsyncSubscription subscription = conn.subscribe(
                 NatsClient.TEST_TOPIC, msg -> {
                     try {
+                        log.info("subscribeAsync() <--- " + msg);
                         EventMessage event = mapper.readValue(msg.getData(), EventMessage.class);
                         System.out.println("Received event id " + event.getPayload());
                     } catch (IOException e) {
